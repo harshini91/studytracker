@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}| {{ 'Edit' if subject else 'Add' }} Subject{% endblock %}
+{% block page_title %}{{ 'Edit' if subject else 'Add' }} Subject{% endblock %}
+
+{% block content %}
+<div style="max-width:540px;">
+  <a href="{{ url_for('subjects') }}" class="btn-st btn-ghost-st" style="margin-bottom:20px; display:inline-flex;">
+    <i class="bi bi-arrow-left"></i> Back to Subjects
+  </a>
+
+  <div class="st-card">
+    <div class="st-card-title"><i class="bi bi-book me-2"></i>{{ 'Edit Subject #' ~ subject.subject_id if subject else 'New Subject' }}</div>
+
+    <form method="POST" style="display:flex; flex-direction:column; gap:18px;">
+      <div>
+        <label class="st-form-label">Subject Name *</label>
+        <input type="text" name="subject_name" class="st-form-control"
+               value="{{ subject.subject_name if subject else '' }}" placeholder="e.g. Database Systems" required>
+      </div>
+
+      {% if not subject %}
+      <div>
+        <label class="st-form-label">Assigned User *</label>
+        <select name="user_id" class="st-form-control" required>
+          <option value="">— select user —</option>
+          {% for u in users %}
+          <option value="{{ u.user_id }}">{{ u.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <div>
+        <label class="st-form-label">Difficulty Level *</label>
+        <select name="difficulty_level" class="st-form-control" required>
+          {% for d in ['Easy','Medium','Hard'] %}
+          <option value="{{ d }}" {% if subject and subject.difficulty_level == d %}selected{% endif %}>{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div>
+          <label class="st-form-label">Start Date *</label>
+          <input type="date" name="start_date" class="st-form-control"
+                 value="{{ subject.start_date if subject else '' }}" required>
+        </div>
+        <div>
+          <label class="st-form-label">End Date *</label>
+          <input type="date" name="end_date" class="st-form-control"
+                 value="{{ subject.end_date if subject else '' }}" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="st-form-label">Data Source</label>
+        <select name="metadata_source" class="st-form-control">
+          {% for opt in ['manual','imported','system'] %}
+          <option value="{{ opt }}" {% if subject and subject.metadata_source == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="display:flex; gap:10px; padding-top:4px;">
+        <button type="submit" class="btn-st btn-primary-st"><i class="bi bi-check-lg"></i> {{ 'Update' if subject else 'Create' }} Subject</button>
+        <a href="{{ url_for('subjects') }}" class="btn-st btn-ghost-st">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}| {{ 'Edit' if user else 'Add' }} User{% endblock %}
+{% block page_title %}{{ 'Edit' if user else 'Add' }} User{% endblock %}
+
+{% block content %}
+<div style="max-width:520px;">
+  <a href="{{ url_for('users') }}" class="btn-st btn-ghost-st" style="margin-bottom:20px; display:inline-flex;">
+    <i class="bi bi-arrow-left"></i> Back to Users
+  </a>
+
+  <div class="st-card">
+    <div class="st-card-title"><i class="bi bi-person me-2"></i>{{ 'Edit User #' ~ user.user_id if user else 'New User' }}</div>
+
+    <form method="POST" style="display:flex; flex-direction:column; gap:18px;">
+      <div>
+        <label class="st-form-label">Full Name *</label>
+        <input type="text" name="name" class="st-form-control"
+               value="{{ user.name if user else '' }}" placeholder="e.g. Asha" required>
+      </div>
+      <div>
+        <label class="st-form-label">Email Address *</label>
+        <input type="email" name="email" class="st-form-control"
+               value="{{ user.email if user else '' }}" placeholder="asha@email.com" required>
+      </div>
+      <div>
+        <label class="st-form-label">Created By</label>
+        <select name="metadata_created_by" class="st-form-control">
+          {% for opt in ['admin', 'super_admin', 'system', 'manual'] %}
+          <option value="{{ opt }}" {% if user and user.metadata_created_by == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div style="display:flex; gap:10px; padding-top:4px;">
+        <button type="submit" class="btn-st btn-primary-st"><i class="bi bi-check-lg"></i> {{ 'Update' if user else 'Create' }} User</button>
+        <a href="{{ url_for('users') }}" class="btn-st btn-ghost-st">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

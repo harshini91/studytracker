@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}| Study Sessions{% endblock %}
+{% block page_title %}Study Sessions{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div style="color:var(--muted); font-size:0.8rem;">{{ sessions|length }} session{{ 's' if sessions|length != 1 }} logged</div>
+  <a href="{{ url_for('add_session') }}" class="btn-st btn-primary-st"><i class="bi bi-plus-circle"></i> Log Session</a>
+</div>
+
+<div class="st-card" style="padding:0; overflow:hidden;">
+  <table class="st-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Subject</th>
+        <th>Date</th>
+        <th>Topic</th>
+        <th>Duration</th>
+        <th>Progress</th>
+        <th>Tag</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sessions %}
+      <tr>
+        <td style="color:var(--muted)">#{{ s.session_id }}</td>
+        <td style="font-weight:500">{{ s.user.name }}</td>
+        <td>
+          <span class="diff-badge diff-{{ s.subject.difficulty_level }}" style="font-size:0.62rem">{{ s.subject.subject_name }}</span>
+        </td>
+        <td style="color:var(--muted)">{{ s.session_date }}</td>
+        <td style="color:var(--text); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ s.topic_studied }}</td>
+        <td>
+          <span style="color:var(--accent)">{{ s.duration_minutes }}</span>
+          <span style="color:var(--muted); font-size:0.7rem"> min</span>
+        </td>
+        <td>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="prog-bar-wrap">
+              <div class="prog-bar-fill" style="width:{{ s.progress_percent }}%"></div>
+            </div>
+            <span style="font-size:0.72rem; color:var(--muted)">{{ s.progress_percent }}%</span>
+          </div>
+        </td>
+        <td style="color:var(--muted); font-size:0.72rem;">{{ s.metadata_tag }}</td>
+        <td style="text-align:right;">
+          <div style="display:flex; gap:6px; justify-content:flex-end;">
+            <a href="{{ url_for('edit_session', sess_id=s.session_id) }}" class="btn-st btn-accent2-st" style="padding:6px 12px;">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <form method="POST" action="{{ url_for('delete_session', sess_id=s.session_id) }}" style="display:inline"
+                  onsubmit="return confirm('Delete this session?')">
+              <button type="submit" class="btn-st btn-danger-st" style="padding:6px 12px;">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:32px;">No sessions logged yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

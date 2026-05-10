@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}| Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stat Grid -->
+<div class="stat-grid">
+  <div class="stat-box" style="--accent-color: var(--accent)">
+    <div class="stat-label">Total Users</div>
+    <div class="stat-value">{{ total_users }}</div>
+    <div class="stat-sub">registered learners</div>
+  </div>
+  <div class="stat-box" style="--accent-color: var(--accent2)">
+    <div class="stat-label">Subjects</div>
+    <div class="stat-value">{{ total_subjects }}</div>
+    <div class="stat-sub">courses tracked</div>
+  </div>
+  <div class="stat-box" style="--accent-color: #f5a623">
+    <div class="stat-label">Sessions</div>
+    <div class="stat-value">{{ total_sessions }}</div>
+    <div class="stat-sub">study sessions logged</div>
+  </div>
+  <div class="stat-box" style="--accent-color: var(--accent3)">
+    <div class="stat-label">Avg Progress</div>
+    <div class="stat-value">{{ avg_progress }}%</div>
+    <div class="stat-sub">across all sessions</div>
+  </div>
+  <div class="stat-box" style="--accent-color: #7c6aff">
+    <div class="stat-label">Total Minutes</div>
+    <div class="stat-value">{{ total_minutes }}</div>
+    <div class="stat-sub">minutes studied</div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Top Subjects -->
+  <div class="col-md-6">
+    <div class="st-card">
+      <div class="st-card-title"><i class="bi bi-bar-chart me-2"></i>Top Subjects by Sessions</div>
+      {% if top_subjects %}
+        {% set max_cnt = top_subjects[0][1] %}
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          {% for name, cnt in top_subjects %}
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:6px;">
+              <span style="color:var(--text)">{{ name }}</span>
+              <span style="color:var(--accent)">{{ cnt }} session{{ 's' if cnt != 1 }}</span>
+            </div>
+            <div class="prog-bar-wrap" style="width:100%;">
+              <div class="prog-bar-fill" style="width:{{ (cnt / max_cnt * 100)|int }}%"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p style="color:var(--muted); font-size:0.8rem;">No session data yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Monthly Sessions -->
+  <div class="col-md-6">
+    <div class="st-card">
+      <div class="st-card-title"><i class="bi bi-calendar3 me-2"></i>Sessions by Month</div>
+      {% if monthly %}
+        {% set max_m = monthly | map(attribute=1) | max %}
+        <div class="bar-chart">
+          {% for month, cnt in monthly %}
+          <div class="bar-item">
+            <div class="bar-fill" style="height:{{ (cnt / max_m * 70)|int }}px;"></div>
+            <div class="bar-label">{{ ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month|int] }}</div>
+            <div class="bar-label" style="color:var(--accent)">{{ cnt }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p style="color:var(--muted); font-size:0.8rem;">No data yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="st-card mt-2">
+  <div class="st-card-title"><i class="bi bi-lightning me-2"></i>Quick Actions</div>
+  <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <a href="{{ url_for('add_user') }}" class="btn-st btn-primary-st"><i class="bi bi-person-plus"></i> Add User</a>
+    <a href="{{ url_for('add_subject') }}" class="btn-st btn-accent2-st"><i class="bi bi-book"></i> Add Subject</a>
+    <a href="{{ url_for('add_session') }}" class="btn-st btn-ghost-st"><i class="bi bi-plus-circle"></i> Log Session</a>
+  </div>
+</div>
+{% endblock %}

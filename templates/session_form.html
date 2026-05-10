@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}| {{ 'Edit' if session else 'Log' }} Session{% endblock %}
+{% block page_title %}{{ 'Edit' if session else 'Log' }} Study Session{% endblock %}
+
+{% block content %}
+<div style="max-width:560px;">
+  <a href="{{ url_for('sessions') }}" class="btn-st btn-ghost-st" style="margin-bottom:20px; display:inline-flex;">
+    <i class="bi bi-arrow-left"></i> Back to Sessions
+  </a>
+
+  <div class="st-card">
+    <div class="st-card-title"><i class="bi bi-clock-history me-2"></i>{{ 'Edit Session #' ~ session.session_id if session else 'New Study Session' }}</div>
+
+    {% if not session %}
+    <div style="background:rgba(0,229,160,0.05); border:1px solid rgba(0,229,160,0.15); border-radius:6px; padding:10px 14px; font-size:0.75rem; color:var(--muted); margin-bottom:18px;">
+      <i class="bi bi-info-circle" style="color:var(--accent)"></i>
+      This form uses a <strong style="color:var(--accent)">SQL transaction</strong> — the session is only saved after all data is validated.
+    </div>
+    {% endif %}
+
+    <form method="POST" style="display:flex; flex-direction:column; gap:18px;">
+      {% if not session %}
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div>
+          <label class="st-form-label">User *</label>
+          <select name="user_id" class="st-form-control" required>
+            <option value="">— select —</option>
+            {% for u in users %}
+            <option value="{{ u.user_id }}">{{ u.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label class="st-form-label">Subject *</label>
+          <select name="subject_id" class="st-form-control" required>
+            <option value="">— select —</option>
+            {% for sub in subjects %}
+            <option value="{{ sub.subject_id }}">{{ sub.subject_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="st-form-label">Session Date *</label>
+        <input type="date" name="session_date" class="st-form-control" required>
+      </div>
+      {% endif %}
+
+      <div>
+        <label class="st-form-label">Topic Studied *</label>
+        <input type="text" name="topic_studied" class="st-form-control"
+               value="{{ session.topic_studied if session else '' }}"
+               placeholder="e.g. ER Diagrams" required>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div>
+          <label class="st-form-label">Duration (minutes) *</label>
+          <input type="number" name="duration_minutes" class="st-form-control" min="1"
+                 value="{{ session.duration_minutes if session else '' }}"
+                 placeholder="90" required>
+        </div>
+        <div>
+          <label class="st-form-label">Progress % *</label>
+          <input type="number" name="progress_percent" class="st-form-control" min="0" max="100" step="0.01"
+                 value="{{ session.progress_percent if session else '' }}"
+                 placeholder="0–100" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="st-form-label">Tag</label>
+        <input type="text" name="metadata_tag" class="st-form-control"
+               value="{{ session.metadata_tag if session else '' }}"
+               placeholder="e.g. week1">
+      </div>
+
+      <div style="display:flex; gap:10px; padding-top:4px;">
+        <button type="submit" class="btn-st btn-primary-st"><i class="bi bi-check-lg"></i> {{ 'Update' if session else 'Log' }} Session</button>
+        <a href="{{ url_for('sessions') }}" class="btn-st btn-ghost-st">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

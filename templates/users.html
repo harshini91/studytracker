@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}| Users{% endblock %}
+{% block page_title %}Users{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div style="color:var(--muted); font-size:0.8rem;">{{ users|length }} user{{ 's' if users|length != 1 }} registered</div>
+  <a href="{{ url_for('add_user') }}" class="btn-st btn-primary-st"><i class="bi bi-person-plus"></i> Add User</a>
+</div>
+
+<div class="st-card" style="padding:0; overflow:hidden;">
+  <table class="st-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Created</th>
+        <th>Last Login</th>
+        <th>Created By</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td style="color:var(--muted)">#{{ u.user_id }}</td>
+        <td style="font-weight:500; color:var(--text)">{{ u.name }}</td>
+        <td style="color:var(--muted)">{{ u.email }}</td>
+        <td style="color:var(--muted)">{{ u.created_at }}</td>
+        <td style="color:var(--muted)">{{ u.last_login }}</td>
+        <td>
+          <span style="font-size:0.68rem; background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:2px 8px; color:var(--muted)">
+            {{ u.metadata_created_by }}
+          </span>
+        </td>
+        <td style="text-align:right;">
+          <div style="display:flex; gap:6px; justify-content:flex-end;">
+            <a href="{{ url_for('edit_user', uid=u.user_id) }}" class="btn-st btn-accent2-st" style="padding:6px 12px;">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <form method="POST" action="{{ url_for('delete_user', uid=u.user_id) }}" style="display:inline"
+                  onsubmit="return confirm('Delete {{ u.name }}?')">
+              <button type="submit" class="btn-st btn-danger-st" style="padding:6px 12px;">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" style="text-align:center; color:var(--muted); padding:32px;">No users found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

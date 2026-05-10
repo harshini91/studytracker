@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyTracker {% block title %}{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #1f2d45;
+      --accent: #00e5a0;
+      --accent2: #7c6aff;
+      --accent3: #ff6b6b;
+      --text: #e8edf5;
+      --muted: #6b7a99;
+      --hard: #ff6b6b;
+      --medium: #f5a623;
+      --easy: #00e5a0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      min-height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .logo-mark {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .sidebar-logo .logo-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sidebar-nav { padding: 20px 0; flex: 1; }
+    .nav-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 24px 8px;
+      margin-top: 12px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-family: 'DM Mono', monospace;
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--text); background: var(--surface2); }
+    .sidebar-link.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: rgba(0,229,160,0.06);
+    }
+    .sidebar-link i { font-size: 1rem; width: 18px; text-align: center; }
+
+    /* ── Main ── */
+    .main-wrap {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+    .topbar-badge {
+      font-size: 0.65rem;
+      background: rgba(0,229,160,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(0,229,160,0.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .page-content { padding: 32px; flex: 1; }
+
+    /* ── Cards ── */
+    .st-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .st-card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Stat widgets ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent-color, var(--accent));
+    }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: var(--text); line-height: 1; }
+    .stat-sub { font-size: 0.65rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Tables ── */
+    .st-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .st-table thead th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 400;
+    }
+    .st-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s;
+    }
+    .st-table tbody tr:hover { background: var(--surface2); }
+    .st-table tbody td { padding: 12px 14px; color: var(--text); vertical-align: middle; }
+
+    /* ── Difficulty badges ── */
+    .diff-badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .diff-Hard   { background: rgba(255,107,107,0.15); color: var(--hard);   border: 1px solid rgba(255,107,107,0.3); }
+    .diff-Medium { background: rgba(245,166,35,0.15);  color: var(--medium); border: 1px solid rgba(245,166,35,0.3); }
+    .diff-Easy   { background: rgba(0,229,160,0.12);   color: var(--easy);   border: 1px solid rgba(0,229,160,0.25); }
+
+    /* ── Buttons ── */
+    .btn-st {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary-st  { background: var(--accent); color: #0b0f1a; }
+    .btn-primary-st:hover { background: #00c98c; color: #0b0f1a; }
+    .btn-ghost-st    { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost-st:hover { color: var(--text); border-color: var(--text); }
+    .btn-danger-st   { background: rgba(255,107,107,0.12); color: var(--hard); border: 1px solid rgba(255,107,107,0.25); }
+    .btn-danger-st:hover { background: rgba(255,107,107,0.25); }
+    .btn-accent2-st  { background: rgba(124,106,255,0.12); color: var(--accent2); border: 1px solid rgba(124,106,255,0.25); }
+    .btn-accent2-st:hover { background: rgba(124,106,255,0.25); }
+
+    /* ── Forms ── */
+    .st-form-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .st-form-control {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .st-form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.08); }
+    .st-form-control option { background: var(--surface2); }
+
+    /* ── Alerts ── */
+    .flash-wrap { margin-bottom: 20px; }
+    .flash-msg {
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .flash-success { background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.25); color: var(--accent); }
+    .flash-error   { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); color: var(--hard); }
+
+    /* ── Progress bar ── */
+    .prog-bar-wrap { background: var(--surface2); border-radius: 4px; height: 6px; width: 80px; display: inline-block; vertical-align: middle; }
+    .prog-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+
+    /* ── Bar chart ── */
+    .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 80px; }
+    .bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar-fill { width: 100%; border-radius: 3px 3px 0 0; background: var(--accent); min-height: 4px; transition: height 0.4s; }
+    .bar-label { font-size: 0.55rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">StudyTracker</div>
+    <div class="logo-sub">Academic Hub</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Overview</div>
+    <a href="{{ url_for('dashboard') }}" class="sidebar-link {% if request.endpoint=='dashboard' %}active{% endif %}">
+      <i class="bi bi-grid-1x2"></i> Dashboard
+    </a>
+    <div class="nav-label">Manage</div>
+    <a href="{{ url_for('users') }}" class="sidebar-link {% if 'user' in request.endpoint %}active{% endif %}">
+      <i class="bi bi-people"></i> Users
+    </a>
+    <a href="{{ url_for('subjects') }}" class="sidebar-link {% if 'subject' in request.endpoint %}active{% endif %}">
+      <i class="bi bi-book"></i> Subjects
+    </a>
+    <a href="{{ url_for('sessions') }}" class="sidebar-link {% if 'session' in request.endpoint %}active{% endif %}">
+      <i class="bi bi-clock-history"></i> Study Sessions
+    </a>
+  </nav>
+</aside>
+
+<!-- Main -->
+<div class="main-wrap">
+  <div class="topbar">
+    <span class="topbar-title">{% block page_title %}{% endblock %}</span>
+    <span class="topbar-badge">CS665 Project 3</span>
+  </div>
+
+  <div class="page-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-wrap">
+      {% for category, message in messages %}
+      <div class="flash-msg flash-{{ category }}">
+        <i class="bi bi-{% if category=='success' %}check-circle{% else %}exclamation-triangle{% endif %}"></i>
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
