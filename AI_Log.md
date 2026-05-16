@@ -9,7 +9,7 @@ This file documents the use of Generative AI tools during the development of the
 | Field | Details |
 |-------|---------|
 | **Tool** | Claude (Anthropic) — claude.ai |
-| **Date** | 2025 |
+| **Date** | 2026 |
 | **Prompt** | “I already created a StudyTracker database project and need learning guidance and reference examples for improving the Flask backend structure, SQLAlchemy model organization, CRUD routes, transaction handling, frontend templates, normalization analysis, and project documentation. Provide implementation approaches and example structures only for understanding and reference while I modify and develop the final application myself.” |
 | **AI Output Summary** | Provided reference examples and implementation guidance for Flask application structure, SQLAlchemy ORM organization, CRUD route handling, database integration, HTML template layouts, normalization documentation, and project setup organization. |
 | **Your Modifications** | Verified all SQLAlchemy model column types matched the original SQL schema. Modified CRUD routes, validation logic, and transaction handling to fit the StudyTracker project requirements. Updated seed data and manually tested insert, update, delete, and dashboard operations. Adjusted frontend templates, styling, and navigation layout. Verified normalization analysis and corrected implementation issues independently before final submission. |
@@ -21,7 +21,7 @@ This file documents the use of Generative AI tools during the development of the
 | Field | Details |
 |-------|---------|
 | **Tool** | ChatGPT (OpenAI) — chatgpt.com |
-| **Date** | 2025 |
+| **Date** | 2026 |
 | **Prompt** | “Provide learning guidance and reference examples for organizing SQL queries, improving dashboard insights, and understanding frontend-backend integration in a Flask-based StudyTracker application.” |
 | **AI Output Summary** | Generated reference examples for SQL query organization, dashboard metrics, frontend-backend communication flow, and application structure suggestions. |
 | **Your Modifications** | Rewrote and customized SQL queries according to the StudyTracker database schema. Integrated logic into the existing application structure. Tested outputs manually and fixed implementation issues. Updated dashboard formatting, improved UI structure, and verified overall application behavior independently. |
