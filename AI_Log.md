@@ -33,7 +33,7 @@ This file documents the use of Generative AI tools during the development of the
 | Field | Details |
 |-------|---------|
 | **Tool** | ChatGPT (OpenAI) — chatgpt.com |
-| **Date** | 2025 |
+| **Date** | 2026 |
 | **Prompt** | “Provide guidance for improving project documentation, README structure, normalization explanation, and code organization for a database management system project.” |
 | **AI Output Summary** | Suggested formatting approaches, documentation structure, commenting practices, normalization explanation ideas, and README organization examples. |
 | **Your Modifications** | Organized and updated the final README, normalization report, comments, and project documentation according to course requirements. Added project-specific explanations, verified outputs, and finalized documentation independently. |
