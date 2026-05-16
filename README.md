@@ -1,4 +1,4 @@
-# StudyTracker — CS665 Project 3
+# StudyTracker applications — CS665 Project 3
 
 A full-stack study tracking application built with Python/Flask, SQLAlchemy, and SQLite.
 
