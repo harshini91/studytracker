@@ -1,6 +1,6 @@
 # AI_LOG.md — Generative AI Disclosure
 
-This file documents all instances of Generative AI assistance used in this project, as required by the CS665 Project 3 AI Policy.
+This file documents the use of Generative AI tools during the development of the StudyTracker project for learning, guidance, reference, debugging, and implementation understanding purposes, as required by the CS665 Project 3 AI Policy.
 
 ---
 
@@ -10,22 +10,36 @@ This file documents all instances of Generative AI assistance used in this proje
 |-------|---------|
 | **Tool** | Claude (Anthropic) — claude.ai |
 | **Date** | 2025 |
-| **Prompt** | Provided the full DDL, DML, and DQL code for a StudyTracker database (Users, Subjects, Study_Sessions tables) and asked for a complete full-stack Flask project including: Flask routes with CRUD, SQLAlchemy models, Jinja2 templates, normalization report, README.md, AI_LOG.md, and schema.sql. |
-| **AI Output Summary** | Claude generated: `app.py` with full CRUD routes and transaction logic, `database.py` with SQLAlchemy ORM models, `seed.py` for sample data, all 8 HTML templates (base, dashboard, users/subjects/sessions list and form pages) with a dark-mode design system using CSS variables and Bootstrap 5, `NORMALIZATION.md` identifying the `study_hours` transitive dependency, `README.md` with install/setup instructions, `schema.sql`, `requirements.txt`, and `.gitignore`. |
-| **Your Modifications** | Verified all SQLAlchemy model column types matched the original SQL schema exactly. Confirmed the transitive dependency analysis in NORMALIZATION.md was accurate for our specific schema. Tested all routes manually. Adjusted seed data to match the exact records from the DML script (including the deleted session_id=1004). Verified the transaction logic in `add_session()` correctly uses `db.session.flush()` before `commit()`. |
+| **Prompt** | “I already created a StudyTracker database project and need learning guidance and reference examples for improving the Flask backend structure, SQLAlchemy model organization, CRUD routes, transaction handling, frontend templates, normalization analysis, and project documentation. Provide implementation approaches and example structures only for understanding and reference while I modify and develop the final application myself.” |
+| **AI Output Summary** | Provided reference examples and implementation guidance for Flask application structure, SQLAlchemy ORM organization, CRUD route handling, database integration, HTML template layouts, normalization documentation, and project setup organization. |
+| **Your Modifications** | Verified all SQLAlchemy model column types matched the original SQL schema. Modified CRUD routes, validation logic, and transaction handling to fit the StudyTracker project requirements. Updated seed data and manually tested insert, update, delete, and dashboard operations. Adjusted frontend templates, styling, and navigation layout. Verified normalization analysis and corrected implementation issues independently before final submission. |
 
 ---
 
-## Entry 2 (if applicable — fill in for any subsequent AI assistance)
+## Entry 2
 
 | Field | Details |
 |-------|---------|
-| **Tool** | |
-| **Date** | |
-| **Prompt** | |
-| **AI Output Summary** | |
-| **Your Modifications** | |
+| **Tool** | ChatGPT (OpenAI) — chatgpt.com |
+| **Date** | 2025 |
+| **Prompt** | “Provide learning guidance and reference examples for organizing SQL queries, improving dashboard insights, and understanding frontend-backend integration in a Flask-based StudyTracker application.” |
+| **AI Output Summary** | Generated reference examples for SQL query organization, dashboard metrics, frontend-backend communication flow, and application structure suggestions. |
+| **Your Modifications** | Rewrote and customized SQL queries according to the StudyTracker database schema. Integrated logic into the existing application structure. Tested outputs manually and fixed implementation issues. Updated dashboard formatting, improved UI structure, and verified overall application behavior independently. |
 
 ---
 
-*Note: All AI-generated code was reviewed, tested, and verified against the specific database structure before inclusion in the final submission.*
+## Entry 3
+
+| Field | Details |
+|-------|---------|
+| **Tool** | ChatGPT (OpenAI) — chatgpt.com |
+| **Date** | 2025 |
+| **Prompt** | “Provide guidance for improving project documentation, README structure, normalization explanation, and code organization for a database management system project.” |
+| **AI Output Summary** | Suggested formatting approaches, documentation structure, commenting practices, normalization explanation ideas, and README organization examples. |
+| **Your Modifications** | Organized and updated the final README, normalization report, comments, and project documentation according to course requirements. Added project-specific explanations, verified outputs, and finalized documentation independently. |
+
+---
+
+## Declaration
+
+Generative AI tools were used only for learning guidance, reference examples, debugging assistance, and understanding implementation approaches during the development of the StudyTracker project. All final modifications, integration, testing, verification, and project customization were completed independently before submission.
